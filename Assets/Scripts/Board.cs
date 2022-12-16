@@ -10,17 +10,22 @@ public enum GameState
 
 public class Board : MonoBehaviour
 {
+
     public GameState currentState = GameState.move;
     public int width;
     public int height;
     public int offset;
     public GameObject tilePrefab;
     public GameObject[] dots;
+    public GameObject destroyEffect;
     public GameObject[,] allDots;
+    public Dot currentDot;
     private BackgroundTile[,] allTiles;
+    private FindMatches findMatches;
 
     void Start()
     {
+        findMatches = FindObjectOfType<FindMatches>();
         allTiles = new BackgroundTile[width, height];
         allDots = new GameObject[width, height];
         SetUp();
@@ -94,6 +99,14 @@ public class Board : MonoBehaviour
     {
         if (allDots[column, row].GetComponent<Dot>().isMatched)
         {
+            //How many elements are in the matched pieces list from findmatches ?
+            if (findMatches.currentMatches.Count == 4 || findMatches.currentMatches.Count == 7)
+            {
+                findMatches.CheckBombs();
+            }
+            findMatches.currentMatches.Remove(allDots[column, row]);
+            GameObject particle = Instantiate(destroyEffect, allDots[column, row].transform.position, Quaternion.identity);
+            Destroy(particle, .3f);
             Destroy(allDots[column, row]);
             allDots[column, row] = null;
         }
@@ -184,6 +197,8 @@ public class Board : MonoBehaviour
             yield return new WaitForSeconds(.5f);
             DestroyMatches();
         }
+        findMatches.currentMatches.Clear();
+        currentDot = null;
         yield return new WaitForSeconds(.5f);
         currentState = GameState.move;
 
