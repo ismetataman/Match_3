@@ -311,3 +311,4 @@ MonoBehaviour:
   - {fileID: 4069631280546403414, guid: 2832ccd801b137c468f3e5df84e75de9, type: 3}
   - {fileID: 4519375114139417832, guid: 1bf02727eb72fde4d8d672edb967b7d3, type: 3}
   destroyEffect: {fileID: 6082233099580741802, guid: a5355508e83bada4ab36a76b713cf0c8, type: 3}
+  currentDot: {fileID: 0}

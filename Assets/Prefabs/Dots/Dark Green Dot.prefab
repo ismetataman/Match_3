@@ -114,6 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32139c432db90cf46aef0d5cbd894759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  otherDot: {fileID: 0}
   isMatched: 0
   column: 0
   row: 0
@@ -123,7 +124,11 @@ MonoBehaviour:
   targetY: 0
   swipeAngle: 0
   swipeResist: 1
+  isColorBomb: 0
   isColumnBomb: 0
   isRowBomb: 0
+  isAdjacentBomb: 0
   rowArrow: {fileID: 7730120315443786898, guid: 270ad60f16bc830408a857994bd9c383, type: 3}
   columnArrow: {fileID: 2944812936927045806, guid: bb4166035f6e40e4db69bdcc8d6da0c3, type: 3}
+  colorBomb: {fileID: 3953482978638003276, guid: 9b613fa4e41ca954582b53cea23771fd, type: 3}
+  adjacentMarker: {fileID: 6004543817157420579, guid: 145713a12213d584eb6871241bded32e, type: 3}
