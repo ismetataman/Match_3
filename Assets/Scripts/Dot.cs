@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Dot : MonoBehaviour
 {
+    private HintManager hintManager;
     private FindMatches findMatches;
     private Vector2 firstTouchPos;
     private Vector2 finalTouchPos;
@@ -40,6 +41,7 @@ public class Dot : MonoBehaviour
         isColorBomb = false;
         isAdjacentBomb = false;
 
+        hintManager = FindObjectOfType<HintManager>();
         board = FindObjectOfType<Board>();
         findMatches = FindObjectOfType<FindMatches>();
     }
@@ -131,6 +133,11 @@ public class Dot : MonoBehaviour
     }
     private void OnMouseDown()
     {
+        //Destroy the hint
+        if (hintManager != null)
+        {
+            hintManager.DestroyHint();
+        }
         if (board.currentState == GameState.move)
         {
             firstTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
