@@ -35,15 +35,23 @@ public class Board : MonoBehaviour
     public GameObject destroyEffect;
     public TileType[] boardLayout;
     public GameObject[,] allDots;
+    public int[] scoreGoals;
     public Dot currentDot;
+    public int basePieceValue = 20;
+    public float refillDelay = 0.5f;
     private bool[,] blankSpaces;
     private BackgroundTile[,] breakableTiles;
     private FindMatches findMatches;
+    private ScoreManager scoreManager;
+    private SoundManager soundManager;
+    private int streakValue = 1;
 
     void Start()
     {
         breakableTiles = new BackgroundTile[width, height];
         findMatches = FindObjectOfType<FindMatches>();
+        scoreManager = FindObjectOfType<ScoreManager>();
+        soundManager = FindObjectOfType<SoundManager>();
         blankSpaces = new bool[width, height];
         allDots = new GameObject[width, height];
         SetUp();
@@ -55,10 +63,10 @@ public class Board : MonoBehaviour
         {
             if (boardLayout[i].x <= width - 1 && boardLayout[i].y <= height - 1)
             {
-            if (boardLayout[i].tileKind == TileKind.Blank)
-            {
-                blankSpaces[boardLayout[i].x, boardLayout[i].y] = true;
-            }
+                if (boardLayout[i].tileKind == TileKind.Blank)
+                {
+                    blankSpaces[boardLayout[i].x, boardLayout[i].y] = true;
+                }
             }
         }
     }
@@ -70,14 +78,14 @@ public class Board : MonoBehaviour
         {
             if (boardLayout[i].x <= width - 1 && boardLayout[i].y <= height - 1)
             {
-            //if a tile is a jelly tile
-            if (boardLayout[i].tileKind == TileKind.Breakable)
-            {
-                //create a jelly tile at that position
-                Vector2 tempPos = new Vector2(boardLayout[i].x, boardLayout[i].y);
-                GameObject tile = Instantiate(breakableTilePrefab, tempPos, Quaternion.identity);
-                breakableTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
-            }
+                //if a tile is a jelly tile
+                if (boardLayout[i].tileKind == TileKind.Breakable)
+                {
+                    //create a jelly tile at that position
+                    Vector2 tempPos = new Vector2(boardLayout[i].x, boardLayout[i].y);
+                    GameObject tile = Instantiate(breakableTilePrefab, tempPos, Quaternion.identity);
+                    breakableTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+                }
             }
         }
     }
@@ -94,7 +102,8 @@ public class Board : MonoBehaviour
                 {
                     //for tile background
                     Vector2 tempPosition = new Vector2(i, j + offset);
-                    GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity) as GameObject;
+                    Vector2 tilePos = new Vector2(i, j);
+                    GameObject backgroundTile = Instantiate(tilePrefab, tilePos, Quaternion.identity) as GameObject;
                     backgroundTile.transform.parent = this.transform;
                     backgroundTile.name = "(" + i + ", " + j + " )";
 
@@ -279,9 +288,15 @@ public class Board : MonoBehaviour
                     breakableTiles[column, row] = null;
                 }
             }
+            //Does the sound manager exist?
+            if (soundManager != null)
+            {
+                soundManager.PlayRandomDestroyNoise();
+            }
             GameObject particle = Instantiate(destroyEffect, allDots[column, row].transform.position, Quaternion.identity);
             Destroy(particle, .3f);
             Destroy(allDots[column, row]);
+            scoreManager.IncreaseScore(basePieceValue * streakValue);
             allDots[column, row] = null;
         }
     }
@@ -329,7 +344,7 @@ public class Board : MonoBehaviour
 
             }
         }
-        yield return new WaitForSeconds(.4f);
+        yield return new WaitForSeconds(refillDelay * 0.5f);
         StartCoroutine(FillBoardCo());
     }
     private IEnumerator DecreaseRowCo()
@@ -351,7 +366,7 @@ public class Board : MonoBehaviour
             }
             nullCount = 0;
         }
-        yield return new WaitForSeconds(.4f);
+        yield return new WaitForSeconds(refillDelay * 0.5f);
         StartCoroutine(FillBoardCo());
     }
 
@@ -366,6 +381,15 @@ public class Board : MonoBehaviour
                 {
                     Vector2 tempPos = new Vector2(i, j + offset);
                     int dotToUse = Random.Range(0, dots.Length);
+                    int maxIterations = 0;
+
+                    while (MatchesAt(i, j, dots[dotToUse]) && maxIterations < 100)
+                    {
+                        maxIterations++;
+                        dotToUse = Random.Range(0, dots.Length);
+                    }
+
+                    maxIterations = 0;
                     GameObject piece = Instantiate(dots[dotToUse], tempPos, Quaternion.identity);
                     allDots[i, j] = piece;
                     piece.GetComponent<Dot>().row = j;
@@ -400,15 +424,16 @@ public class Board : MonoBehaviour
     private IEnumerator FillBoardCo()
     {
         RefillBoard();
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(refillDelay);
         while (MatchesOnBoard())
         {
-            yield return new WaitForSeconds(.5f);
+            streakValue++;
             DestroyMatches();
+            yield return new WaitForSeconds(2 * refillDelay);
         }
         findMatches.currentMatches.Clear();
         currentDot = null;
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(refillDelay);
 
         if (IsDeadlocked())
         {
@@ -416,6 +441,7 @@ public class Board : MonoBehaviour
             Debug.Log("Deadlocked!!!");
         }
         currentState = GameState.move;
+        streakValue = 1;
 
     }
 

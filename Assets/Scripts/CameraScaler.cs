@@ -8,6 +8,7 @@ public class CameraScaler : MonoBehaviour
     public float cameraOffset;
     public float aspectRatio = 0.5625f; // 9/16 portrait aspect ratio
     public float padding = 2f;
+    public float yOffset = 1;
 
     void Start()
     {
@@ -20,7 +21,7 @@ public class CameraScaler : MonoBehaviour
 
     void RepositionCamera(float x, float y)
     {
-        Vector3 tempPos = new Vector3(x / 2, y / 2, cameraOffset);
+        Vector3 tempPos = new Vector3(x / 2, y / 2 + yOffset, cameraOffset);
         transform.position = tempPos;
         if (board.width >= board.height)
         {
