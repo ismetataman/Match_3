@@ -5,7 +5,10 @@ using UnityEngine;
 public enum GameState
 {
     wait,
-    move
+    move,
+    win,
+    lose,
+    pause
 }
 
 public enum TileKind
@@ -24,15 +27,23 @@ public class TileType
 
 public class Board : MonoBehaviour
 {
+    [Header("Scriptable Object Stuff")]
+    public World world;
+    public int level;
 
     public GameState currentState = GameState.move;
+    [Header("Board Dimensions")]
     public int width;
     public int height;
     public int offset;
+
+    [Header("Prefabs")]
     public GameObject tilePrefab;
     public GameObject breakableTilePrefab;
     public GameObject[] dots;
     public GameObject destroyEffect;
+
+    [Header("Layout")]
     public TileType[] boardLayout;
     public GameObject[,] allDots;
     public int[] scoreGoals;
@@ -44,7 +55,26 @@ public class Board : MonoBehaviour
     private FindMatches findMatches;
     private ScoreManager scoreManager;
     private SoundManager soundManager;
+    private GoalManager goalManager;
     private int streakValue = 1;
+
+    private void Awake()
+    {
+        if (world != null)
+        {
+            if (level < world.levels.Length)
+            {
+                if (world.levels[level] != null)
+                {
+                    width = world.levels[level].width;
+                    height = world.levels[level].height;
+                    dots = world.levels[level].dots;
+                    scoreGoals = world.levels[level].scoreGoals;
+                    boardLayout = world.levels[level].boardLayout;
+                }
+            }
+        }
+    }
 
     void Start()
     {
@@ -52,9 +82,11 @@ public class Board : MonoBehaviour
         findMatches = FindObjectOfType<FindMatches>();
         scoreManager = FindObjectOfType<ScoreManager>();
         soundManager = FindObjectOfType<SoundManager>();
+        goalManager = FindObjectOfType<GoalManager>();
         blankSpaces = new bool[width, height];
         allDots = new GameObject[width, height];
         SetUp();
+        currentState = GameState.pause;
     }
 
     public void GenerateBlankSpaces()
@@ -287,6 +319,12 @@ public class Board : MonoBehaviour
                 {
                     breakableTiles[column, row] = null;
                 }
+            }
+            //Checks the goals 
+            if (goalManager != null)
+            {
+                goalManager.CompareGoal(allDots[column, row].tag.ToString());
+                goalManager.UpdateGoals();
             }
             //Does the sound manager exist?
             if (soundManager != null)

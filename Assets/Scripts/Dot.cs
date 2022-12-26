@@ -6,6 +6,7 @@ public class Dot : MonoBehaviour
 {
     private HintManager hintManager;
     private FindMatches findMatches;
+    private EndGameManager endGameManager;
     private Vector2 firstTouchPos;
     private Vector2 finalTouchPos;
     private Vector2 tempPos;
@@ -44,6 +45,7 @@ public class Dot : MonoBehaviour
         hintManager = FindObjectOfType<HintManager>();
         board = FindObjectOfType<Board>();
         findMatches = FindObjectOfType<FindMatches>();
+        endGameManager = FindObjectOfType<EndGameManager>();
     }
     //This is for testing and debug only
     private void OnMouseOver()
@@ -126,6 +128,13 @@ public class Dot : MonoBehaviour
             }
             else
             {
+                if(endGameManager != null)
+                {
+                    if(endGameManager.requirements.gameType == GameType.Moves)
+                    {
+                        endGameManager.DecreaseCounterValue();
+                    }
+                }
                 board.DestroyMatches();
             }
         }
