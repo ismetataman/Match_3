@@ -18,6 +18,7 @@ public class GoalPanel : MonoBehaviour
     void Setup()
     {
         thisImage.sprite = thisSprite;
+        thisImage.preserveAspect = true;
         thisText.text = thisString;
     }
 }

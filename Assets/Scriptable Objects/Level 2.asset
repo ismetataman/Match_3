@@ -14,23 +14,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 6
   height: 8
-  boardLayout: []
+  boardLayout:
+  - x: 2
+    y: 2
+    tileKind: 0
+  - x: 2
+    y: 3
+    tileKind: 0
   dots:
   - {fileID: 4761449877029227875, guid: fd1f8c255acba40478e7a992d0c1b880, type: 3}
-  - {fileID: 4254060730655746890, guid: 07874109f0382724ba6f7c1402e158c6, type: 3}
   - {fileID: 7662712055610269854, guid: ea102ded5afe6b54d9e8f9f8af0debfa, type: 3}
   - {fileID: 4069631280546403414, guid: 2832ccd801b137c468f3e5df84e75de9, type: 3}
   - {fileID: 5704406969105187802, guid: 9b70e4c6fe10f844e92d7567e91d3dbb, type: 3}
+  - {fileID: 7571865547852742215, guid: 01b09cfbf710b7841ba1f53a520f41c4, type: 3}
   scoreGoals: e803000088130000581b0000
   endGameRequirements:
     gameType: 1
     counterValue: 100
   levelGoals:
   - numberNeeded: 2
-    numberCollected: 0
+    numberCollected: 3
     goalSprite: {fileID: 21300000, guid: b53b40ab111172e409859624a25cc5fe, type: 3}
     matchValue: Teal Dot
-  - numberNeeded: 5
-    numberCollected: 0
+  - numberNeeded: 2
+    numberCollected: 2
     goalSprite: {fileID: 21300000, guid: 277b54a58fd5da54188ae9a3fc7244cd, type: 3}
     matchValue: Breakable

@@ -10,9 +10,11 @@ public class ScoreManager : MonoBehaviour
     public int score;
     public Image scoreBar;
     private Board board;
+    private GameData gameData;
     void Start()
     {
         board = FindObjectOfType<Board>();
+        gameData = FindObjectOfType<GameData>();
     }
 
     void Update()
@@ -23,6 +25,15 @@ public class ScoreManager : MonoBehaviour
     public void IncreaseScore(int amountToIncrease)
     {
         score += amountToIncrease;
+        if(gameData != null)
+        {
+            int highScore = gameData.saveData.highScores[board.level];
+            if(score > highScore)
+            {
+                gameData.saveData.highScores[board.level] = score;
+            }
+            gameData.Save();
+        }
         if (board != null && scoreBar != null)
         {
             int lenght = board.scoreGoals.Length;
