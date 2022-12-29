@@ -58,15 +58,27 @@ public class GameData : MonoBehaviour
     public void Load()
     {
         //Check if the save game file exist
-        if(File.Exists(Application.persistentDataPath + "/player.dat"))
+        if (File.Exists(Application.persistentDataPath + "/player.dat"))
         {
             //Create a Binary Formatter
             BinaryFormatter formatter = new BinaryFormatter();
-            FileStream file = File.Open(Application.persistentDataPath + "/player.dat",FileMode.Open);
+            FileStream file = File.Open(Application.persistentDataPath + "/player.dat", FileMode.Open);
             saveData = formatter.Deserialize(file) as SaveData;
             file.Close();
             Debug.Log("Loaded");
         }
+        else
+        {
+            saveData = new SaveData();
+            saveData.isActive = new bool[100];
+            saveData.stars = new int[100];
+            saveData.highScores = new int[100];
+            saveData.isActive[0] = true;
+        }
+    }
+    private void OnApplicationQuit()
+    {
+        Save();
     }
 
     private void OnDisable()
