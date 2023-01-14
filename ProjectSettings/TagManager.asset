@@ -15,6 +15,9 @@ TagManager:
   - Color
   - Breakable
   - Board
+  - Concrete
+  - Chocolate
+  - Lock
   layers:
   - Default
   - TransparentFX
@@ -51,4 +54,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Markers
+    uniqueID: 3300068153
     locked: 0

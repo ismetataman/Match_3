@@ -17,10 +17,16 @@ MonoBehaviour:
   boardLayout:
   - x: 2
     y: 2
-    tileKind: 0
+    tileKind: 4
   - x: 2
     y: 3
-    tileKind: 0
+    tileKind: 4
+  - x: 2
+    y: 4
+    tileKind: 4
+  - x: 2
+    y: 5
+    tileKind: 4
   dots:
   - {fileID: 4761449877029227875, guid: fd1f8c255acba40478e7a992d0c1b880, type: 3}
   - {fileID: 7662712055610269854, guid: ea102ded5afe6b54d9e8f9f8af0debfa, type: 3}
@@ -33,10 +39,10 @@ MonoBehaviour:
     counterValue: 100
   levelGoals:
   - numberNeeded: 2
-    numberCollected: 3
+    numberCollected: 7
     goalSprite: {fileID: 21300000, guid: b53b40ab111172e409859624a25cc5fe, type: 3}
     matchValue: Teal Dot
   - numberNeeded: 2
-    numberCollected: 2
-    goalSprite: {fileID: 21300000, guid: 277b54a58fd5da54188ae9a3fc7244cd, type: 3}
-    matchValue: Breakable
+    numberCollected: 0
+    goalSprite: {fileID: 21300000, guid: 95014207fab077d43a75d44c4e1b7e88, type: 3}
+    matchValue: Concrete
