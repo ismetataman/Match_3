@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 4
   height: 4
-  boardLayout: []
+  boardLayout:
+  - x: 2
+    y: 2
+    tileKind: 4
   dots:
   - {fileID: 4761449877029227875, guid: fd1f8c255acba40478e7a992d0c1b880, type: 3}
   - {fileID: 4069631280546403414, guid: 2832ccd801b137c468f3e5df84e75de9, type: 3}
@@ -27,5 +30,9 @@ MonoBehaviour:
   levelGoals:
   - numberNeeded: 7
     numberCollected: 0
-    goalSprite: {fileID: 21300000, guid: b53b40ab111172e409859624a25cc5fe, type: 3}
-    matchValue: Teal Dot
+    goalSprite: {fileID: 21300000, guid: 28db47bb891cc294abf0a7339cfa2ac9, type: 3}
+    matchValue: Orange Dot
+  - numberNeeded: 1
+    numberCollected: 0
+    goalSprite: {fileID: 21300000, guid: d1338c341d518aa4c804c5628f6a04b6, type: 3}
+    matchValue: Chocolate

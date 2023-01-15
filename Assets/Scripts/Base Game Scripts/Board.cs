@@ -729,7 +729,10 @@ public class Board : MonoBehaviour
             ShuffleBoard();
             Debug.Log("Deadlocked!!!");
         }
-        currentState = GameState.move;
+        if(currentState != GameState.pause)
+        {
+            currentState = GameState.move;
+        }
         makeSlime = true;
         streakValue = 1;
 
